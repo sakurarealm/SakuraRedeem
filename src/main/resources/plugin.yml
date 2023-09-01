@@ -1,3 +1,13 @@
 name: SakuraRedeem
 version: '${version}'
 main: com.sakurarealm.sakuraredeem.SakuraRedeem
+
+commands:
+  redeemopen:
+    description: "打开一个装着物品的箱子"
+    aliases: [sdopen]
+    usage: /<command> <package> - 打开一个装着物品的箱子
+
+  srredeem.admin:
+    description: "允许管理SakuraRedeem插件"
+    default: op

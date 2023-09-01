@@ -1,5 +1,6 @@
 package com.sakurarealm.sakuraredeem;
 
+import com.sakurarealm.sakuraredeem.command.CommandOpen;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,6 +14,8 @@ public final class SakuraRedeem extends JavaPlugin {
         playerListener = new PlayerListener();
 
         Bukkit.getPluginManager().registerEvents(playerListener, this);
+
+        getCommand("redeemeopn").setExecutor(new CommandOpen());
     }
 
     @Override
