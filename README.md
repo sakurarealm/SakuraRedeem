@@ -12,3 +12,7 @@
 - [ ] 可以批量添加以及通过yml导入
 - [ ] 随机cdk和自定义cdk两种模式
 - [ ] cdk有有效时间限制
+
+#### [DataBase Structure](https://dbdiagram.io/d/64f2cdd002bd1c4a5ed691ef)
+
+![database.png](./database.png)
