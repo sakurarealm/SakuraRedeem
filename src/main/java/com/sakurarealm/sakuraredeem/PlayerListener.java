@@ -9,7 +9,7 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-         event.getPlayer().sendMessage("Hello!");
+        event.getPlayer().sendMessage("Hello!");
     }
 
     @EventHandler

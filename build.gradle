@@ -1,4 +1,12 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '8.0.0+'
     id 'java'
 }
 
@@ -15,10 +23,35 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+configurations {
+    shadow
+    implementation.extendsFrom shadow
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    compileOnly name: "spigot-1.12-R0.1-SNAPSHOT"
+
+    implementation "mysql:mysql-connector-java:8.0.33"
+
+    shadow 'com.baomidou:mybatis-plus:3.4.3'
+    shadow 'com.baomidou:mybatis-plus-extension:3.4.3'
+    shadow "org.yaml:snakeyaml:2.0"
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    archivesBaseName = project.name
+    archiveClassifier = 'fat'
+
+    // Relocate shadowed resources
+    relocate "org.yaml", "${project.group}.shadow.org.yaml"
+    relocate "com.baomidou", "${project.group}.shadow.com.baomidou"
 }
 
 def targetJavaVersion = 8
@@ -38,10 +71,13 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [version: version, name: project.name]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
     }
 }
+
+tasks.jar.dependsOn(processResources)
+tasks.shadowJar.dependsOn(processResources)

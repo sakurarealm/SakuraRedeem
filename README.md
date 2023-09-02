@@ -6,7 +6,7 @@
 - [ ] 兑换者输入cdk 获得一个装着物品的箱子
 - [ ] 兑换者输入cdk 执行某一段指令
 - [ ] 兑换者输入cdk 获得vault钱币
-- [ ] 兼容paceholder api
+- [ ] 兼容placeholder api
 - [ ] Admin可以方便的编辑箱子里的物品
 - [ ] 方便管理，可以接MySQL
 - [ ] 可以批量添加以及通过yml导入

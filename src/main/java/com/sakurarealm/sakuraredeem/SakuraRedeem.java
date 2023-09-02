@@ -16,6 +16,12 @@ public final class SakuraRedeem extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(playerListener, this);
 
         getCommand("redeemeopn").setExecutor(new CommandOpen());
+
+        saveDefaultConfig();
+    }
+
+    private void registerCommands() {
+
     }
 
     @Override

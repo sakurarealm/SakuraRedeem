@@ -1,11 +1,11 @@
-name: SakuraRedeem
+name: ${name}
 version: '${version}'
 main: com.sakurarealm.sakuraredeem.SakuraRedeem
 
 commands:
   redeemopen:
     description: "打开一个装着物品的箱子"
-    aliases: [sdopen]
+    aliases: [rdopen]
     usage: /<command> <package> - 打开一个装着物品的箱子
 
   srredeem.admin:
