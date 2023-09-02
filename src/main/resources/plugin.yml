@@ -1,13 +1,34 @@
-name: SakuraRedeem
+name: ${name}
 version: '${version}'
 main: com.sakurarealm.sakuraredeem.SakuraRedeem
 
 commands:
-  redeemopen:
-    description: "打开一个装着物品的箱子"
-    aliases: [sdopen]
-    usage: /<command> <package> - 打开一个装着物品的箱子
+  sakurapackage:
+    description: "管理员控制指令"
+    aliases: [sp, srpackage, package]
+    usage: |
+      /<command> new <package> - 新建一个包。注意：这个指令将清空同名包 (Op Only)
+      /<command> item <package> - 编辑包中的物品 (Op Only)
+      /<command> cmd <package> add <executable> [self|terminal] - 为兑换包时添加执行一条指令 (Op Only)
+      /<command> cmd <package> clear - 清空执行包时的所有指令 (Op Only)
+      /<command> vault <package> <amount_micros> - 执行指令时使用vault兑换的钱币 (Op Only)
+      /<command> del <package> - 删除一个package (Op Only)
+      /<command> list - 展示所有包
+      /<command> export <package> - 获得一个yml详细展示包中的内容
+      /<command> import <package> <yml> - 导入一个yml包 
 
-  srredeem.admin:
+  sakurasdk:
+    description: "生成或者兑换sdk"
+    aliases: [srsdk, sdk]
+    usage: |
+      /<command> redeem <sdk> - 兑换一个sdk
+      /<command> history - 显示兑换历史
+      /<command> history <player> - 显示玩家的兑换历史 (Op Only)
+      /<command> gen <package> <expire_after_hours> [custom_sdk] - 为包生成一个sdk (Op Only)
+      /<command> list - 展示所有sdk以及过期时间 (Op Only)
+      /<command> del <sdk> - 删除一个sdk (Op Only)
+
+permissions:
+  sakuraredeem.admin:
     description: "允许管理SakuraRedeem插件"
     default: op

@@ -1,4 +1,11 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
 plugins {
+    id 'com.github.johnrengelman.shadow' version '8.0.0+'
     id 'java'
 }
 
@@ -15,10 +22,35 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
+configurations {
+    shadow
+    implementiona.extendsFrom shaow
+}
+
+
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+//    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    compileOnly name: 'spigot-1.12-R0.1-SNAPSHOT'
+
+    shadow 'com.baomidou:mybatis-plus:3.4.3'
+    shadow 'com.baomidou:mybatis-plus-extension:3.4.3'
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+
+    archiveClassifier = "fat"
+    archivesBaseName = project.name
+
+    relocate 'com.baomidou', "${project.group}.shadow.com.baomidou"
+    relocate 'net', "${project.group}.shadow.net"
+    relocate 'org', "${project.group}.shadow.org"
 }
 
 def targetJavaVersion = 8
@@ -38,7 +70,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 processResources {
-    def props = [version: version]
+    def props = [version: version, name: project.name]
     inputs.properties props
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
