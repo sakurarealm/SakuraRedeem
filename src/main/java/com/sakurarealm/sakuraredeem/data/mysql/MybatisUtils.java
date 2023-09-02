@@ -2,8 +2,6 @@ package com.sakurarealm.sakuraredeem.data.mysql;
 
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
-import org.apache.ibatis.logging.log4j2.Log4j2Impl;
-import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,9 +10,9 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.bukkit.configuration.ConfigurationSection;
 
 import javax.sql.DataSource;
-import java.util.Map;
 
 public class MybatisUtils {
+
     private static SqlSessionFactory sqlSessionFactory;
     private static SqlSession sqlSession;
 

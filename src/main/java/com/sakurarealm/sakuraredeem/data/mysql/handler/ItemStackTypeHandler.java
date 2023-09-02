@@ -11,27 +11,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ItemStackTypeHandler extends BaseTypeHandler<ItemStack> {
+
+
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, ItemStack parameter, JdbcType jdbcType) throws SQLException {
-        String serializedNBT = ItemStackHelper.getInstance().itemToNBT(parameter);
-        ps.setString(i, serializedNBT);
+        String nbt = ItemStackHelper.getInstance().itemToNBT(parameter);
+        ps.setString(i, nbt);
     }
 
     @Override
     public ItemStack getNullableResult(ResultSet rs, String columnName) throws SQLException {
-        String serializedNBT = rs.getString(columnName);
-        return ItemStackHelper.getInstance().nbtToItem(serializedNBT);
+        return ItemStackHelper.getInstance().nbtToItem(rs.getString(columnName));
     }
 
     @Override
     public ItemStack getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
-        String serializedNBT = rs.getString(columnIndex);
-        return ItemStackHelper.getInstance().nbtToItem(serializedNBT);
+        return ItemStackHelper.getInstance().nbtToItem(rs.getString(columnIndex));
     }
 
     @Override
     public ItemStack getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
-        String serializedNBT = cs.getString(columnIndex);
-        return ItemStackHelper.getInstance().nbtToItem(serializedNBT);
+        return ItemStackHelper.getInstance().nbtToItem(cs.getString(columnIndex));
     }
 }

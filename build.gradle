@@ -1,6 +1,5 @@
 buildscript {
     repositories {
-        jcenter()
         mavenCentral()
     }
 }
@@ -31,35 +30,27 @@ repositories {
 
 configurations {
     shadow
-    implementation.extendsFrom shadow
+    implementiona.extendsFrom shaow
 }
 
-dependencies {
-    compileOnly name: "spigot-1.12-R0.1-SNAPSHOT"
 
-    implementation "mysql:mysql-connector-java:8.0.33"
+dependencies {
+//    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
+    compileOnly name: 'spigot-1.12-R0.1-SNAPSHOT'
 
     shadow 'com.baomidou:mybatis-plus:3.4.3'
     shadow 'com.baomidou:mybatis-plus-extension:3.4.3'
-    shadow "org.yaml:snakeyaml:2.0"
-
-    testImplementation platform('org.junit:junit-bom:5.9.1')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testImplementation name: "spigot-1.12-R0.1-SNAPSHOT"
-}
-
-test {
-    useJUnitPlatform()
 }
 
 shadowJar {
     configurations = [project.configurations.shadow]
-    archivesBaseName = project.name
-    archiveClassifier = 'fat'
 
-    // Relocate shadowed resources
-    relocate "org.yaml", "${project.group}.shadow.org.yaml"
-    relocate "com.baomidou", "${project.group}.shadow.com.baomidou"
+    archiveClassifier = "fat"
+    archivesBaseName = project.name
+
+    relocate 'com.baomidou', "${project.group}.shadow.com.baomidou"
+    relocate 'net', "${project.group}.shadow.net"
+    relocate 'org', "${project.group}.shadow.org"
 }
 
 def targetJavaVersion = 8
@@ -86,6 +77,3 @@ processResources {
         expand props
     }
 }
-
-tasks.jar.dependsOn(processResources)
-tasks.shadowJar.dependsOn(processResources)
