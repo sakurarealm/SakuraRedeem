@@ -2,7 +2,7 @@ package com.sakurarealm.sakuraredeem.utils;
 
 import org.bukkit.Bukkit;
 
-public class Logger {
+public class BukkitLogger {
 
     private static final String TAG = "[SRRedeem] ";
 

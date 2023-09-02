@@ -1,6 +1,6 @@
 package com.sakurarealm.sakuraredeem.data.yaml;
 
-import com.sakurarealm.sakuraredeem.utils.Logger;
+import com.sakurarealm.sakuraredeem.utils.BukkitLogger;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.annotation.Nullable;
@@ -25,9 +25,9 @@ public class YamlHelper {
         try (InputStream inputStream = new FileInputStream(yamlFile)) {
             return (Map<String, Object>) yaml.load(inputStream);
         } catch (FileNotFoundException e) {
-            Logger.error(String.format("%s file not found error\n%s", yamlFile, e));
+            BukkitLogger.error(String.format("%s file not found error\n%s", yamlFile, e));
         } catch (Exception e) {
-            Logger.error(String.format("Error while loading %s\n%s", yamlFile, e));
+            BukkitLogger.error(String.format("Error while loading %s\n%s", yamlFile, e));
         }
         return null;
     }
@@ -44,12 +44,12 @@ public class YamlHelper {
         Yaml yaml = new Yaml();
         try (InputStream inputStream = YamlHelper.class.getResourceAsStream(resourcePath)) {
             if (inputStream == null) {
-                Logger.error(String.format("%s file not found error", resourcePath));
+                BukkitLogger.error(String.format("%s file not found error", resourcePath));
                 return null;
             }
             return (Map<String, Object>) yaml.load(inputStream);
         } catch (Exception e) {
-            Logger.error(String.format("Error while loading %s\n%s", resourcePath, e));
+            BukkitLogger.error(String.format("Error while loading %s\n%s", resourcePath, e));
         }
         return null;
     }

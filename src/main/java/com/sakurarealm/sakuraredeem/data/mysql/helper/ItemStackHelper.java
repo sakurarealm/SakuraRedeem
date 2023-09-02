@@ -1,6 +1,6 @@
 package com.sakurarealm.sakuraredeem.data.mysql.helper;
 
-import com.sakurarealm.sakuraredeem.utils.Logger;
+import com.sakurarealm.sakuraredeem.utils.BukkitLogger;
 import net.minecraft.server.v1_12_R1.MojangsonParser;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
@@ -31,7 +31,7 @@ public class ItemStackHelper {
             net.minecraft.server.v1_12_R1.ItemStack nmsItemStack = new net.minecraft.server.v1_12_R1.ItemStack(compound);
             return CraftItemStack.asBukkitCopy(nmsItemStack);
         } catch (Exception e) {
-            Logger.error(String.format("An error occurred while deserializing the nbt data:\n%s", e));
+            BukkitLogger.error(String.format("An error occurred while deserializing the nbt data:\n%s", e));
             return null;
         }
     }

@@ -1,14 +1,15 @@
 package com.sakurarealm.sakuraredeem.data.mysql;
 
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
-import com.sakurarealm.sakuraredeem.utils.Logger;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
+import org.apache.ibatis.logging.log4j2.Log4j2Impl;
 import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
+import org.bukkit.configuration.ConfigurationSection;
 
 import javax.sql.DataSource;
 import java.util.Map;
@@ -23,14 +24,14 @@ public class MybatisUtils {
      * @param mysqlConfig The database configurations loaded from yaml
      * @throws RuntimeException Threw if any error encountered
      */
-    public static void init(Map<String, Object> mysqlConfig) {
+    public static void init(ConfigurationSection mysqlConfig) {
         // Initialize sql datasource from external yaml
         try {
             PooledDataSource dataSource = new PooledDataSource();
-            dataSource.setUrl(mysqlConfig.get("url").toString());
-            dataSource.setUsername(mysqlConfig.get("username").toString());
-            dataSource.setPassword(mysqlConfig.get("password").toString());
-            dataSource.setDriver("driver-class-name");
+            dataSource.setUrl(mysqlConfig.getString("url"));
+            dataSource.setUsername(mysqlConfig.getString("username"));
+            dataSource.setPassword(mysqlConfig.getString("password"));
+            dataSource.setDriver(mysqlConfig.getString("driver-class-name"));
 
             // Build the session factory
             sqlSessionFactory = createSessionFactory(dataSource,
@@ -48,7 +49,6 @@ public class MybatisUtils {
      * @return
      */
     public static SqlSessionFactory createSessionFactory(DataSource dataSource, String packageNameOfMappers) {
-        Logger.info("Creating Sql Session Factory");
         SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
         MybatisConfiguration configuration = new MybatisConfiguration();
 
@@ -57,7 +57,7 @@ public class MybatisUtils {
         // Use camel case
         configuration.setMapUnderscoreToCamelCase(true);
         // Add logger
-        configuration.setLogImpl(Slf4jImpl.class);
+//        configuration.setLogImpl(Log4j2Impl.class);
 
         // Set environment
         Environment environment = new Environment("dev", new JdbcTransactionFactory(), dataSource);
@@ -78,7 +78,6 @@ public class MybatisUtils {
         if (sqlSessionFactory == null)
             throw new RuntimeException("Mybatis is not initialized!");
 
-        Logger.info("Connection session opened");
         if (sqlSession != null)
             sqlSession.close();
 

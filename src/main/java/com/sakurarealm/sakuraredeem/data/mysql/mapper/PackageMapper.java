@@ -14,15 +14,11 @@ public interface PackageMapper {
             "  PRIMARY KEY (`name`),\n" +
             "  UNIQUE KEY `name` (`name`)\n" +
             ")";
-    String NEW_PACKAGE_QUERY = "SET autocommit = 0;\n" +
-            "START TRANSACTION;\n" +
-            "INSERT sd_packages(name, created_at)\n" +
+    String NEW_PACKAGE_QUERY = "INSERT sd_packages(name, created_at)\n" +
             "VALUES (#{package_name}, NOW()})\n" +
-            "ON DUPLICATE KEY UPDATE created_at = NOW();\n" +
-            // Delete all packages associations
-            "COMMIT;\n" +
-            "SET autocommit = 1";
-    String DELETE_PACKAGE_QUERY = "";
+            "ON DUPLICATE KEY UPDATE created_at = NOW()";
+
+    String DELETE_PACKAGE_QUERY = "DELETE FROM sd_packages where name=#{package_name}";
 
     @Update(CREATE_QUERY)
     void createPackageTableIfNotExist();
