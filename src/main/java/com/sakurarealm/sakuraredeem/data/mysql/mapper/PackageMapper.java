@@ -42,4 +42,11 @@ public interface PackageMapper {
                     many = @Many(select = "com.sakurarealm.sakuraredeem.data.mysql.mapper.CommandMapper.getAllCommands")),
     })
     Package findPackage(@Param("package_name") String package_name);
+
+    @Select(FIND_QUERY)
+    @Results({
+            @Result(property = "name", column = "name"),
+            @Result(property = "created_at", column = "created_at"),
+    })
+    Package findPackageWithoutSubjects(@Param("package_name") String package_name);
 }

@@ -31,7 +31,7 @@ public interface CommandMapper {
     void insertCommand(@Param("package_name") String package_name, @Param("command") String command);
 
     @Delete(DELETE_QUERY)
-    void clearItemStacks(@Param("package_name") String package_name);
+    void clearCommands(@Param("package_name") String package_name);
 
     @Select(GET_COMMANDS_QUERY)
     @Results({

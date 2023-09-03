@@ -1,12 +1,16 @@
 package com.sakurarealm.sakuraredeem.command;
 
+import com.sakurarealm.sakuraredeem.SakuraRedeem;
 import com.sakurarealm.sakuraredeem.data.mysql.helper.PackageHelper;
+import com.sakurarealm.sakuraredeem.utils.AsyncTaskRunner;
 import com.sakurarealm.sakuraredeem.utils.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CommandPackage implements CommandExecutor {
 
@@ -41,7 +45,6 @@ public class CommandPackage implements CommandExecutor {
                 return true;
         }
 
-        return true;
     }
 
     private void newPackage(CommandSender sender, String cmd, String[] args) {
@@ -50,14 +53,22 @@ public class CommandPackage implements CommandExecutor {
             return;
         }
         // Create new package
-        if (PackageHelper.getInstance().newPackage(args[1])) {
-            sender.sendMessage(ChatColor.GREEN + "成功建立了新的包裹" + args[1]);
-        } else {
-            sender.sendMessage(ChatColor.DARK_RED + "后端错误, 请查看终端!");
-        }
+        AsyncTaskRunner<Boolean> taskRunner = new AsyncTaskRunner<>();
+        taskRunner.runAsyncTask(() -> PackageHelper.getInstance().newPackage(args[1]),
+        (success) -> {
+            if (success) {
+                sender.sendMessage(ChatColor.GREEN + "已成功创建新的包裹： " + args[1]);
+            } else {
+                sender.sendMessage("");
+            }
+        });
 
     }
 
+
+    private void item(CommandSender sender, String cmd, String[] args) {
+
+    }
 
 
 }

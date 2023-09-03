@@ -13,6 +13,7 @@ public class Config {
         ConfigurationSection section = plugin.getConfig().getConfigurationSection("mysql");
         MybatisUtils.init(section);
         MybatisUtils.openSession();
+
     }
 
     public static boolean isAdmin(Player player) {

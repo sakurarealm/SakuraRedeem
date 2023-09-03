@@ -12,7 +12,6 @@ import javax.activation.CommandMap;
 
 public class PackageHelper {
 
-
     private static final PackageHelper INSTANCE = new PackageHelper();
 
     private PackageHelper() {
@@ -27,12 +26,22 @@ public class PackageHelper {
         try {
             SqlSession session = MybatisUtils.getSession();
             session.getMapper(PackageMapper.class).newPackage(packageName);
-            session.getMapper(ItemStackMapper.class).clearPackageItems(packageName);
-            session.getMapper(CommandMapper.class).clearPackageCommands(packageName);
+            session.getMapper(ItemStackMapper.class).clearItemStacks(packageName);
+            session.getMapper(CommandMapper.class).clearCommands(packageName);
             session.commit();
             return true;
         } catch (Exception e) {
-            BukkitLogger.error(String.format("Error when creating new package %s:\n%s", packageName, e));
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    synchronized public boolean exists(String packageName) {
+        try {
+            SqlSession session = MybatisUtils.getSession();
+            return null != session.getMapper(PackageMapper.class).findPackageWithoutSubjects(packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
