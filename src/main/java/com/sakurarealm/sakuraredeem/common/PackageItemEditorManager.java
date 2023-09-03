@@ -17,9 +17,8 @@ import java.util.function.BiConsumer;
 
 public class PackageItemEditorManager implements Listener {
 
-    private final Map<String, PackageEditorInstance> openedInventories = new HashMap<>();
-
     private static PackageItemEditorManager INSTANCE;
+    private final Map<String, PackageEditorInstance> openedInventories = new HashMap<>();
 
     private PackageItemEditorManager() {
 
@@ -29,6 +28,10 @@ public class PackageItemEditorManager implements Listener {
         if (INSTANCE != null)
             INSTANCE = new PackageItemEditorManager();
         Bukkit.getPluginManager().registerEvents(INSTANCE, SakuraRedeem.getPlugin());
+    }
+
+    public static PackageItemEditorManager getInstance() {
+        return INSTANCE;
     }
 
     @EventHandler
@@ -47,10 +50,6 @@ public class PackageItemEditorManager implements Listener {
                     runCallback(editor.callback, false, "保存" + packageName + "失败，请查看后台");
             });
         }
-    }
-
-    public static PackageItemEditorManager getInstance() {
-        return INSTANCE;
     }
 
     public void openPackageInventory(Player player, String packageName, BiConsumer<Boolean, String> syncCallback) {

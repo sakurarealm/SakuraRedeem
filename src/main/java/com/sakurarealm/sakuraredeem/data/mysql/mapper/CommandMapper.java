@@ -1,8 +1,6 @@
 package com.sakurarealm.sakuraredeem.data.mysql.mapper;
 
-import com.sakurarealm.sakuraredeem.data.mysql.handler.ItemStackTypeHandler;
 import org.apache.ibatis.annotations.*;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -11,11 +9,11 @@ public interface CommandMapper {
 
     String CREATE_QUERY =
             "CREATE TABLE IF NOT EXISTS `sd_commands` (\n" +
-            "  `package_name` varchar(255),\n" +
-            "  `command` varchar(1024)\n" +
-            ");\n" +
-            "CREATE INDEX `sd_commands_index_1` ON `sd_items` (`package_name`);\n" +
-            "ALTER TABLE `sd_commands` ADD FOREIGN KEY (`package_name`) REFERENCES `sd_packages` (`name`);";
+                    "  `package_name` varchar(255),\n" +
+                    "  `command` varchar(1024)\n" +
+                    ");\n" +
+                    "CREATE INDEX `sd_commands_index_1` ON `sd_items` (`package_name`);\n" +
+                    "ALTER TABLE `sd_commands` ADD FOREIGN KEY (`package_name`) REFERENCES `sd_packages` (`name`);";
 
     String INSERT_QUERY =
             "INSERT INTO sd_commands (package_name, command) VALUES (#{package_name}, #{command})";
