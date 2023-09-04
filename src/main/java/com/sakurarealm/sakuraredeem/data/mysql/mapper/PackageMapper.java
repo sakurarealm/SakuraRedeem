@@ -16,12 +16,12 @@ public interface PackageMapper {
 
     String NEW_PACKAGE_QUERY =
             "INSERT sd_packages(name, created_at)\n" +
-                    "VALUES (#{package_name}, NOW()})\n" +
+                    "VALUES (#{package_name}, NOW())\n" +
                     "ON DUPLICATE KEY UPDATE created_at = NOW()";
 
     String DELETE_QUERY = "DELETE FROM sd_packages WHERE name=#{package_name}";
 
-    String FIND_QUERY = "SELECT (name, created_at) FROM sd_packages WHERE name=#{package_name}";
+    String FIND_QUERY = "SELECT name, created_at FROM sd_packages WHERE name=#{package_name}";
 
     @Update(CREATE_QUERY)
     void createPackageTableIfNotExists();

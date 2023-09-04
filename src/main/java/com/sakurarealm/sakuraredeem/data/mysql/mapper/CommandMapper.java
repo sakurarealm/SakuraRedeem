@@ -12,7 +12,6 @@ public interface CommandMapper {
                     "  `package_name` varchar(255),\n" +
                     "  `command` varchar(1024)\n" +
                     ");\n" +
-                    "CREATE INDEX `sd_commands_index_1` ON `sd_items` (`package_name`);\n" +
                     "ALTER TABLE `sd_commands` ADD FOREIGN KEY (`package_name`) REFERENCES `sd_packages` (`name`);";
 
     String INSERT_QUERY =
@@ -20,7 +19,7 @@ public interface CommandMapper {
 
     String DELETE_QUERY = "DELETE FROM sd_commands WHERE package_name=#{package_name}";
 
-    String GET_COMMANDS_QUERY = "SELECT (command) FROM sd_commands WHERE package_name=#{package_name}";
+    String GET_COMMANDS_QUERY = "SELECT command FROM sd_commands WHERE package_name=#{package_name}";
 
     @Update(CREATE_QUERY)
     void createCommandsTableIfNotExist();

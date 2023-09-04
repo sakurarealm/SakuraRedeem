@@ -5,7 +5,7 @@ main: com.sakurarealm.sakuraredeem.SakuraRedeem
 commands:
   sakurapackage:
     description: "管理员控制指令"
-    aliases: [sp, srpackage, package]
+    aliases: [sp, srpackage, package, pk]
     usage: |
       /<command> new <package> - 新建一个包。注意：这个指令将清空同名包 (Op Only)
       /<command> item <package> - 编辑包中的物品 (Op Only)
@@ -14,6 +14,7 @@ commands:
       /<command> vault <package> <amount_micros> - 执行指令时使用vault兑换的钱币 (Op Only)
       /<command> del <package> - 删除一个package (Op Only)
       /<command> list - 展示所有包
+      /<command> list <package> - 展示包的详细内容
       /<command> export <package> - 获得一个yml详细展示包中的内容
       /<command> import <package> <yml> - 导入一个yml包 
 

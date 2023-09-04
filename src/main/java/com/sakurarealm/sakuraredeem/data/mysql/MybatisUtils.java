@@ -1,6 +1,9 @@
 package com.sakurarealm.sakuraredeem.data.mysql;
 
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
+import com.sakurarealm.sakuraredeem.data.mysql.mapper.CommandMapper;
+import com.sakurarealm.sakuraredeem.data.mysql.mapper.ItemStackMapper;
+import com.sakurarealm.sakuraredeem.data.mysql.mapper.PackageMapper;
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.SqlSession;
@@ -8,6 +11,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.sql.DataSource;
 
@@ -19,24 +23,29 @@ public class MybatisUtils {
     /**
      * Initialize Mybatis
      *
-     * @param mysqlConfig The database configurations loaded from yaml
+     * @param configuration The configurations loaded from yaml
      * @throws RuntimeException Threw if any error encountered
      */
-    public static void init(ConfigurationSection mysqlConfig) {
+    public static void init(FileConfiguration configuration) {
         // Initialize sql datasource from external yaml
         try {
             PooledDataSource dataSource = new PooledDataSource();
-            dataSource.setUrl(mysqlConfig.getString("url"));
-            dataSource.setUsername(mysqlConfig.getString("username"));
-            dataSource.setPassword(mysqlConfig.getString("password"));
-            dataSource.setDriver(mysqlConfig.getString("driver-class-name"));
+            dataSource.setUrl(configuration.getString("mysql.url"));
+            dataSource.setUsername(configuration.getString("mysql.username"));
+            dataSource.setPassword(configuration.getString("mysql.password"));
+            dataSource.setDriver(configuration.getString("mysql.driver-class-name"));
 
-            // Build the session factory
-            sqlSessionFactory = createSessionFactory(dataSource,
-                    "com.sakurarealm.sakuraredeem.data.mysql.mapper");
+            initFromDatasource(dataSource);
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void initFromDatasource(DataSource dataSource) {
+        // Build the session factory
+        sqlSessionFactory = createSessionFactory(dataSource,
+                "com.sakurarealm.sakuraredeem.data.mysql.mapper");
     }
 
     /**
@@ -62,7 +71,10 @@ public class MybatisUtils {
         configuration.setEnvironment(environment);
 
         // Add all mappers
-        configuration.addMappers(packageNameOfMappers);
+        //configuration.addMappers(packageNameOfMappers);
+        configuration.addMapper(PackageMapper.class);
+        configuration.addMapper(ItemStackMapper.class);
+        configuration.addMapper(CommandMapper.class);
 
         return builder.build(configuration);
     }

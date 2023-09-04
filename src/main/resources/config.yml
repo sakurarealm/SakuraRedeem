@@ -2,4 +2,4 @@ mysql:
   url: jdbc:mysql://localhost:3306/sr_fantasy?allowMultiQueries=true
   driver-class-name: com.mysql.cj.jdbc.Driver
   username: root
-  password: p@ssword
+  password: 1138296

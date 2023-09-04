@@ -19,6 +19,18 @@ public class PackageHelper {
         return INSTANCE;
     }
 
+    synchronized public void createAllTables() {
+        try {
+            SqlSession session = MybatisUtils.getSession();
+            session.getMapper(PackageMapper.class).createPackageTableIfNotExists();
+            session.getMapper(ItemStackMapper.class).createItemStacksTableIfNotExist();
+            session.getMapper(CommandMapper.class).createCommandsTableIfNotExist();
+            session.commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     synchronized public boolean newPackage(String packageName) {
         try {
             SqlSession session = MybatisUtils.getSession();

@@ -3,6 +3,7 @@ package com.sakurarealm.sakuraredeem.common;
 import com.sakurarealm.sakuraredeem.SakuraRedeem;
 import com.sakurarealm.sakuraredeem.data.mysql.helper.ItemStackHelper;
 import com.sakurarealm.sakuraredeem.data.mysql.helper.PackageHelper;
+import com.sakurarealm.sakuraredeem.utils.AsyncTaskRunner;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,16 +25,35 @@ public class PackageItemEditorManager implements Listener {
 
     }
 
+    /**
+     * Initializes the PackageItemEditorManager and registers it as an event listener.
+     * <p></p>
+     * <strong>Note:</strong> This method should be called during the plugin's startup sequence to ensure
+     * proper event handling for the PackageItemEditorManager.
+     */
     public static void init() {
-        if (INSTANCE != null)
+        if (INSTANCE == null)
             INSTANCE = new PackageItemEditorManager();
         Bukkit.getPluginManager().registerEvents(INSTANCE, SakuraRedeem.getPlugin());
     }
 
+    /**
+     * Retrieves the singleton instance of the PackageItemEditorManager.
+     *
+     * @return The singleton instance of PackageItemEditorManager, or null if not initialized.
+     */
     public static PackageItemEditorManager getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Event handler triggered when an inventory is closed.
+     * <p>
+     * Note: The function expects the inventory's name to match the package name.
+     * </p>
+     *
+     * @param event The InventoryCloseEvent that triggered the method.
+     */
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         String packageName = event.getInventory().getName();
@@ -41,17 +61,25 @@ public class PackageItemEditorManager implements Listener {
         if (editor != null && editor.owner.equals(event.getPlayer())) {
             openedInventories.remove(packageName);
             // Database writing in async thread
-            Bukkit.getScheduler().runTaskAsynchronously(SakuraRedeem.getPlugin(), () -> {
-                boolean success = ItemStackHelper.getInstance().saveItems(packageName, event.getInventory().getContents());
-                // Call the callback functions in a synchronized thread
+            AsyncTaskRunner<Boolean> taskRunner = new AsyncTaskRunner<>();
+            taskRunner.runAsyncTask(() -> ItemStackHelper.getInstance()
+                            .saveItems(packageName, event.getInventory().getContents()),
+            (success) -> {
                 if (success)
-                    runCallback(editor.callback, true, "成功保存" + packageName);
+                    editor.callback.accept(true, "成功保存" + packageName);
                 else
-                    runCallback(editor.callback, false, "保存" + packageName + "失败，请查看后台");
+                    editor.callback.accept( false, "保存" + packageName + "失败，请查看后台");
             });
         }
     }
 
+    /**
+     * 为一个玩家打开编辑某个包裹内容的编辑器
+     *
+     * @param player 为这个玩家打开页面
+     * @param packageName 要打开的包裹的名字 pre: 已经存在
+     * @param syncCallback 回调函数, boolean: 是否成功; String: 信息
+     */
     public void openPackageInventory(Player player, String packageName, BiConsumer<Boolean, String> syncCallback) {
         // check if opened
         if (openedInventories.get(packageName) != null) {
@@ -67,7 +95,17 @@ public class PackageItemEditorManager implements Listener {
                 Bukkit.getScheduler().runTask(SakuraRedeem.getPlugin(), () -> {
                     openedInventories.put(packageName, new PackageEditorInstance(player, syncCallback));
                     Inventory inventory = Bukkit.createInventory(player, 54, packageName);
-                    inventory.setContents(items);
+                    if (items != null && items.length > 0) {
+                        ItemStack[] fullItemStacks = new ItemStack[54];
+                        System.arraycopy(items, 0, fullItemStacks, 0, items.length);
+                        for (ItemStack item : items) {
+                            if (item != null)
+                                Bukkit.getLogger().info(item.toString());
+                            else
+                                Bukkit.getLogger().info("NULL");
+                        }
+                        inventory.setContents(fullItemStacks);
+                    }
                     player.openInventory(inventory);
                 });
             } else {
@@ -76,6 +114,12 @@ public class PackageItemEditorManager implements Listener {
         });
     }
 
+    /**
+     *
+     * @param callback 回调函数, boolean: 是否成功; String: 信息
+     * @param success 是否成功
+     * @param msg 信息
+     */
     private void runCallback(BiConsumer<Boolean, String> callback, boolean success, String msg) {
         Bukkit.getScheduler().runTask(SakuraRedeem.getPlugin(), () -> {
             callback.accept(false, msg);

@@ -38,8 +38,19 @@ dependencies {
 //    compileOnly "org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT"
     compileOnly name: 'spigot-1.12-R0.1-SNAPSHOT'
 
+    shadow 'mysql:mysql-connector-java:8.0.33'
     shadow 'com.baomidou:mybatis-plus:3.4.3'
     shadow 'com.baomidou:mybatis-plus-extension:3.4.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testImplementation 'mysql:mysql-connector-java:8.0.33'
+    testImplementation name: 'spigot-1.12-R0.1-SNAPSHOT'
+    testImplementation 'com.baomidou:mybatis-plus:3.4.3'
+    testImplementation 'com.baomidou:mybatis-plus-extension:3.4.3'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 shadowJar {
@@ -49,8 +60,6 @@ shadowJar {
     archivesBaseName = project.name
 
     relocate 'com.baomidou', "${project.group}.shadow.com.baomidou"
-    relocate 'net', "${project.group}.shadow.net"
-    relocate 'org', "${project.group}.shadow.org"
 }
 
 def targetJavaVersion = 8
