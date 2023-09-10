@@ -5,4 +5,8 @@ public class Command {
     public String command;
 
     public boolean use_terminal;
+
+    public String toString() {
+        return "";
+    }
 }

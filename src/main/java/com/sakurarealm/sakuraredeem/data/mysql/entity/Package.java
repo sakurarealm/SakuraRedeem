@@ -36,4 +36,8 @@ public class Package {
      * A list of commands associated with the package.
      */
     List<Command> commands;
+
+    public String toString() {
+        return "";
+    }
 }

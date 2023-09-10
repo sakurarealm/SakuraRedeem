@@ -38,7 +38,7 @@ public class CommandPackage implements CommandExecutor {
 
         switch (args[0]) {
             case "new":
-                newPackage(sender, cmd, args);
+                subcommandNew(sender, cmd, args);
                 return true;
             case "item":
                 subcommandItem(sender, cmd, args);
@@ -50,7 +50,7 @@ public class CommandPackage implements CommandExecutor {
 
     }
 
-    private void newPackage(CommandSender sender, String cmd, String[] args) {
+    private void subcommandNew(CommandSender sender, String cmd, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(ChatColor.DARK_RED + "错误的使用方式！\n/" + cmd + " new <package> - 新建一个包。注意：这个指令将清空同名包 (Op Only)");
             return;
