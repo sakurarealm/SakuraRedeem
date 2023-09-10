@@ -35,5 +35,5 @@ public class Package {
     /**
      * A list of commands associated with the package.
      */
-    List<String> commands;
+    List<Command> commands;
 }

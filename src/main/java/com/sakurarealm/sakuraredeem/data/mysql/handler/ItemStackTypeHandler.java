@@ -1,12 +1,10 @@
 package com.sakurarealm.sakuraredeem.data.mysql.handler;
 
 import com.sakurarealm.sakuraredeem.data.mysql.helper.ItemStackHelper;
-import net.minecraft.server.v1_12_R1.NBTCompressedStreamTools;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.bukkit.inventory.ItemStack;
 
-import java.nio.charset.StandardCharsets;
 import java.sql.*;
 
 public class ItemStackTypeHandler extends BaseTypeHandler<ItemStack> {
@@ -36,11 +34,11 @@ public class ItemStackTypeHandler extends BaseTypeHandler<ItemStack> {
      * PreparedStatement at the specified index.
      * </p>
      *
-     * @param ps         The PreparedStatement to set the ItemStack parameter in.
-     * @param i          The index at which the ItemStack parameter should be set.
-     * @param parameter  The ItemStack to be set into the PreparedStatement.
-     * @param jdbcType   The JDBC type of the parameter. This parameter is currently unused but may be required for
-     *                   overriding from a base class or interface.
+     * @param ps        The PreparedStatement to set the ItemStack parameter in.
+     * @param i         The index at which the ItemStack parameter should be set.
+     * @param parameter The ItemStack to be set into the PreparedStatement.
+     * @param jdbcType  The JDBC type of the parameter. This parameter is currently unused but may be required for
+     *                  overriding from a base class or interface.
      * @throws SQLException If there's an error setting the Blob data or other database-related issues.
      */
     @Override

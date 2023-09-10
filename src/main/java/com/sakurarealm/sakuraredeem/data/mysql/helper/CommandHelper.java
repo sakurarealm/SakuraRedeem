@@ -1,6 +1,7 @@
 package com.sakurarealm.sakuraredeem.data.mysql.helper;
 
 import com.sakurarealm.sakuraredeem.data.mysql.MybatisUtils;
+import com.sakurarealm.sakuraredeem.data.mysql.entity.Command;
 import com.sakurarealm.sakuraredeem.data.mysql.mapper.CommandMapper;
 import org.apache.ibatis.session.SqlSession;
 
@@ -18,7 +19,7 @@ public class CommandHelper {
         return INSTANCE;
     }
 
-    synchronized public List<String> getCommands(String packageName) {
+    synchronized public List<Command> getCommands(String packageName) {
         try {
             SqlSession session = MybatisUtils.getSession();
             return session.getMapper(CommandMapper.class).getAllCommands(packageName);
@@ -28,10 +29,10 @@ public class CommandHelper {
         }
     }
 
-    synchronized public boolean insertCommand(String packageName, String command) {
+    synchronized public boolean insertCommand(String packageName, String command, boolean useTerminal) {
         try {
             SqlSession session = MybatisUtils.getSession();
-            session.getMapper(CommandMapper.class).insertCommand(packageName, command);
+            session.getMapper(CommandMapper.class).insertCommand(packageName, command, useTerminal);
             return true;
         } catch (Exception e) {
             e.printStackTrace();

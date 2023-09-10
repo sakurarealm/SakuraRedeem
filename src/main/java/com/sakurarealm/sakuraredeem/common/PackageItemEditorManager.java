@@ -64,20 +64,20 @@ public class PackageItemEditorManager implements Listener {
             AsyncTaskRunner<Boolean> taskRunner = new AsyncTaskRunner<>();
             taskRunner.runAsyncTask(() -> ItemStackHelper.getInstance()
                             .saveItems(packageName, event.getInventory().getContents()),
-            (success) -> {
-                if (success)
-                    editor.callback.accept(true, "成功保存" + packageName);
-                else
-                    editor.callback.accept( false, "保存" + packageName + "失败，请查看后台");
-            });
+                    (success) -> {
+                        if (success)
+                            editor.callback.accept(true, "成功保存" + packageName);
+                        else
+                            editor.callback.accept(false, "保存" + packageName + "失败，请查看后台");
+                    });
         }
     }
 
     /**
      * 为一个玩家打开编辑某个包裹内容的编辑器
      *
-     * @param player 为这个玩家打开页面
-     * @param packageName 要打开的包裹的名字 pre: 已经存在
+     * @param player       为这个玩家打开页面
+     * @param packageName  要打开的包裹的名字 pre: 已经存在
      * @param syncCallback 回调函数, boolean: 是否成功; String: 信息
      */
     public void openPackageInventory(Player player, String packageName, BiConsumer<Boolean, String> syncCallback) {
@@ -115,10 +115,9 @@ public class PackageItemEditorManager implements Listener {
     }
 
     /**
-     *
      * @param callback 回调函数, boolean: 是否成功; String: 信息
-     * @param success 是否成功
-     * @param msg 信息
+     * @param success  是否成功
+     * @param msg      信息
      */
     private void runCallback(BiConsumer<Boolean, String> callback, boolean success, String msg) {
         Bukkit.getScheduler().runTask(SakuraRedeem.getPlugin(), () -> {
