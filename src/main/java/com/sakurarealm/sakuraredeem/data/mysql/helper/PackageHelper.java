@@ -45,6 +45,20 @@ public class PackageHelper {
         }
     }
 
+    synchronized public boolean delPackage(String packageName) {
+        try {
+            SqlSession session = MybatisUtils.getSession();
+            session.getMapper(PackageMapper.class).deletePackage(packageName);
+            session.getMapper(ItemStackMapper.class).clearItemStacks(packageName);
+            session.getMapper(CommandMapper.class).clearCommands(packageName);
+            session.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     synchronized public boolean exists(String packageName) {
         try {
             SqlSession session = MybatisUtils.getSession();

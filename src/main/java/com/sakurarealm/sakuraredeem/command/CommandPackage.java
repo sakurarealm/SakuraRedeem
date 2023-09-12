@@ -43,6 +43,21 @@ public class CommandPackage implements CommandExecutor {
             case "item":
                 subcommandItem(sender, cmd, args);
                 return true;
+            case "cmd":
+                subcommandCommand(sender, cmd, args);
+                return true;
+            case "del":
+                subcommandDel(sender, cmd, args);
+                return true;
+            case "list":
+                subcommandList(sender, cmd, args);
+                return true;
+            case "import":
+                subcommandImport(sender, cmd, args);
+                return true;
+            case "export":
+                subcommandExport(sender, cmd, args);
+                return true;
             default:
                 sender.sendMessage(ChatColor.DARK_RED + "错误的使用方式!");
                 return true;
@@ -131,6 +146,24 @@ public class CommandPackage implements CommandExecutor {
                 sender.sendMessage(ChatColor.DARK_RED + "包裹" + args[1] + "不存在");
             }
         });
+    }
+
+    public void subcommandDel(CommandSender sender, String cmd, String[] args) {
+        if (args.length != 2) {
+            sender.sendMessage(ChatColor.DARK_RED + "错误的使用方式！\n/" +
+                    cmd + "del <package> - 删除一个package (Op Only)");
+            return;
+        }
+        // Create new package
+        AsyncTaskRunner<Boolean> taskRunner = new AsyncTaskRunner<>();
+        taskRunner.runAsyncTask(() -> PackageHelper.getInstance().delPackage(args[1]),
+                (success) -> {
+                    if (success) {
+                        sender.sendMessage(ChatColor.GREEN + "已成功删除包裹： " + args[1]);
+                    } else {
+                        sender.sendMessage(ChatColor.DARK_RED + "数据库读写错误, 请检查后台!");
+                    }
+                });
     }
 
     public void subcommandList(CommandSender sender, String cmd, String[] args) {
