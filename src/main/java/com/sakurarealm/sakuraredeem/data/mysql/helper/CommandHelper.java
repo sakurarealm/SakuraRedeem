@@ -2,6 +2,7 @@ package com.sakurarealm.sakuraredeem.data.mysql.helper;
 
 import com.sakurarealm.sakuraredeem.data.mysql.MybatisUtils;
 import com.sakurarealm.sakuraredeem.data.mysql.entity.Command;
+import com.sakurarealm.sakuraredeem.data.mysql.entity.Package;
 import com.sakurarealm.sakuraredeem.data.mysql.mapper.CommandMapper;
 import org.apache.ibatis.session.SqlSession;
 

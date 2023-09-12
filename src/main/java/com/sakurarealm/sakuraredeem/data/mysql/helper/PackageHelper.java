@@ -2,10 +2,13 @@ package com.sakurarealm.sakuraredeem.data.mysql.helper;
 
 
 import com.sakurarealm.sakuraredeem.data.mysql.MybatisUtils;
+import com.sakurarealm.sakuraredeem.data.mysql.entity.Package;
 import com.sakurarealm.sakuraredeem.data.mysql.mapper.CommandMapper;
 import com.sakurarealm.sakuraredeem.data.mysql.mapper.ItemStackMapper;
 import com.sakurarealm.sakuraredeem.data.mysql.mapper.PackageMapper;
 import org.apache.ibatis.session.SqlSession;
+
+import java.util.List;
 
 public class PackageHelper {
 
@@ -69,4 +72,33 @@ public class PackageHelper {
         }
     }
 
+    synchronized public Package getPackage(String packageName) {
+        try {
+            SqlSession session = MybatisUtils.getSession();
+            return session.getMapper(PackageMapper.class).findPackage(packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    synchronized public Package getPackageWithoutSubjects(String packageName) {
+        try {
+            SqlSession session = MybatisUtils.getSession();
+            return session.getMapper(PackageMapper.class).findPackageWithoutSubjects(packageName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    synchronized public List<Package> getAllPackagesWithoutSubjects() {
+        try {
+            SqlSession session = MybatisUtils.getSession();
+            return session.getMapper(PackageMapper.class).getAllPackagesWithoutSubjects();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

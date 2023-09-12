@@ -1,6 +1,7 @@
 package com.sakurarealm.sakuraredeem.command;
 
 import com.sakurarealm.sakuraredeem.common.PackageItemEditorManager;
+import com.sakurarealm.sakuraredeem.data.mysql.entity.Package;
 import com.sakurarealm.sakuraredeem.data.mysql.helper.CommandHelper;
 import com.sakurarealm.sakuraredeem.data.mysql.helper.PackageHelper;
 import com.sakurarealm.sakuraredeem.utils.AsyncTaskRunner;
@@ -10,6 +11,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class CommandPackage implements CommandExecutor {
 
@@ -151,7 +154,7 @@ public class CommandPackage implements CommandExecutor {
     public void subcommandDel(CommandSender sender, String cmd, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(ChatColor.DARK_RED + "错误的使用方式！\n/" +
-                    cmd + "del <package> - 删除一个package (Op Only)");
+                    cmd + " del <package> - 删除一个package (Op Only)");
             return;
         }
         // Create new package
@@ -167,7 +170,39 @@ public class CommandPackage implements CommandExecutor {
     }
 
     public void subcommandList(CommandSender sender, String cmd, String[] args) {
-
+        if (args.length == 1) {
+            AsyncTaskRunner<List<Package>> taskRunner = new AsyncTaskRunner<>();
+            final String moreDetailHint = ChatColor.GREEN + "For more details, use " + cmd + " list <package name>";
+            taskRunner.runAsyncTask(() -> PackageHelper.getInstance().getAllPackagesWithoutSubjects(),
+                    (packages) -> {
+                        if (packages != null) {
+                            StringBuilder builder = new StringBuilder();
+                            for (Package p : packages) {
+                                builder.append(p.toString()).append('\n');
+                            }
+                            builder.append(moreDetailHint);
+                            sender.sendMessage(builder.toString());
+                        } else {
+                            sender.sendMessage(ChatColor.DARK_RED + "数据库读写错误, 请检查后台!");
+                        }
+                    });
+        } else if (args.length == 2) {
+            String packageName = args[1];
+            AsyncTaskRunner<Package> taskRunner = new AsyncTaskRunner<>();
+            taskRunner.runAsyncTask(() -> PackageHelper.getInstance().getPackage(packageName),
+                    (p) -> {
+                        if (p != null) {
+                            sender.sendMessage(p.toString());
+                        } else {
+                            sender.sendMessage(ChatColor.DARK_RED + "数据库读写错误, 请检查后台!");
+                        }
+                    });
+        } else {
+            String builder = ChatColor.DARK_RED + "错误的使用方式！\n" +
+                    cmd + " list" + '\n' +
+                    cmd + " list <package name>";
+            sender.sendMessage(builder);
+        }
     }
 
     public void subcommandExport(CommandSender sender, String cmd, String[] args) {

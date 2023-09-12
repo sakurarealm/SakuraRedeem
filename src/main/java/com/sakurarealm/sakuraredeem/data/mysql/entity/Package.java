@@ -41,7 +41,7 @@ public class Package {
 
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.BOLD).append(ChatColor.GOLD).append("Package Information:\n");
+        // builder.append(ChatColor.BOLD).append(ChatColor.GOLD).append("Package Information:\n");
         builder.append(formatPackage()).append('\n');
 
         if (items != null) {
@@ -50,7 +50,7 @@ public class Package {
             final int maxHeight = 9;
             final int maxLength = 40;
 
-            for (int i=0; i < items.size() && i < maxHeight; i++) {
+            for (int i = 0; i < items.size() && i < maxHeight; i++) {
                 String text = formatItem(items.get(i));
                 if (text.length() > maxLength + 3) {
                     text = text.substring(0, maxLength) + ChatColor.GREEN + "...";
@@ -70,7 +70,7 @@ public class Package {
             final int maxHeight = 5;
             final int maxLength = 40;
 
-            for (int i=0; i < commands.size() && i < maxHeight; i++) {
+            for (int i = 0; i < commands.size() && i < maxHeight; i++) {
                 String text = commands.get(i).toString();
                 if (text.length() > maxLength + 3) {
                     text = text.substring(0, maxLength) + ChatColor.GREEN + "...";
@@ -88,13 +88,13 @@ public class Package {
     }
 
     public String formatPackage() {
-        return ChatColor.GREEN + "Package name: " + ChatColor.BLUE + name + "\n" +
-                ChatColor.GREEN + " Created at: " + ChatColor.BLUE + created_at.toString();
+        return ChatColor.GOLD + "Package name: " + ChatColor.BLUE + name + "\n" +
+                ChatColor.GOLD + " Created at: " + ChatColor.BLUE + created_at.toString();
     }
 
     public String formatItem(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
-        return ChatColor.GREEN + "Item id: " + ChatColor.BLUE + itemStack.getType().toString() +
-                ChatColor.GREEN + "Display name: " + ChatColor.RESET + meta.getDisplayName();
+        return ChatColor.GOLD + "Item id: " + ChatColor.BLUE + itemStack.getType().toString() +
+                ChatColor.GREEN + " Display name: " + ChatColor.RESET + meta.getDisplayName();
     }
 }

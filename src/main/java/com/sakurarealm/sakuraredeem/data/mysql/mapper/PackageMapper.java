@@ -3,6 +3,8 @@ package com.sakurarealm.sakuraredeem.data.mysql.mapper;
 import com.sakurarealm.sakuraredeem.data.mysql.entity.Package;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface PackageMapper {
 
@@ -22,6 +24,8 @@ public interface PackageMapper {
     String DELETE_QUERY = "DELETE FROM sd_packages WHERE name=#{package_name}";
 
     String FIND_QUERY = "SELECT name, created_at FROM sd_packages WHERE name=#{package_name}";
+
+    String GET_ALL_QUERY = "SELECT name, created_at FROM sd_packages";
 
     @Update(CREATE_QUERY)
     void createPackageTableIfNotExists();
@@ -49,4 +53,22 @@ public interface PackageMapper {
             @Result(property = "created_at", column = "created_at"),
     })
     Package findPackageWithoutSubjects(@Param("package_name") String package_name);
+
+    @Select(GET_ALL_QUERY)
+    @Results({
+            @Result(property = "name", column = "name"),
+            @Result(property = "created_at", column = "created_at"),
+            @Result(property = "items", column = "package_name=name",
+                    many = @Many(select = "com.sakurarealm.sakuraredeem.data.mysql.mapper.ItemStackMapper.getAllItemStacks")),
+            @Result(property = "commands", column = "package_name=name",
+                    many = @Many(select = "com.sakurarealm.sakuraredeem.data.mysql.mapper.CommandMapper.getAllCommands")),
+    })
+    List<Package> getAllPackages();
+
+    @Select(GET_ALL_QUERY)
+    @Results({
+            @Result(property = "name", column = "name"),
+            @Result(property = "created_at", column = "created_at"),
+    })
+    List<Package> getAllPackagesWithoutSubjects();
 }
